@@ -107,7 +107,6 @@ export default function Home() {
     };
 
     const handleSave = () => {
-        console.log(editingPath)
         if (!editingPath) return;
         fetch('/api/note', {
             method: 'POST',
@@ -116,6 +115,11 @@ export default function Home() {
         })
             .then(res => res.json())
             .then(() => {
+                setOutput(prev => prev.map(o =>
+                    o.type === 'content' && o.path === editingPath
+                        ? { ...o, content: editorContent }
+                        : o
+                ));
                 setOutput(prev => [
                     ...prev,
                     { type: 'command', query: `EDIT ${editingPath}` },

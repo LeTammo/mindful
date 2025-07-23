@@ -24,8 +24,14 @@ export function TerminalOutput({
     const lastEditable = lastEditableIndex !== -1 ? output.length - 1 - lastEditableIndex : null;
 
     useEffect(() => {
+        function isCorrectHTMLElement(e: KeyboardEvent) {
+            return e.target instanceof HTMLInputElement
+                && e.target.className !== 'editFileContent'
+                && e.target.value === '';
+        }
+
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'ArrowUp' && lastEditable !== null && e.target instanceof HTMLInputElement && e.target.className !== 'editFileContent') {
+            if (e.key === 'ArrowUp' && lastEditable !== null && isCorrectHTMLElement(e)) {
                 const o = output[lastEditable];
                 if (o.type === 'content') {
                     setEditingPath(o.path || '');

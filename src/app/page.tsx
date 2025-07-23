@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { TerminalOutput } from './components/TerminalOutput';
-import { EditorModal } from './components/EditorModal';
 import { SearchInput } from './components/SearchInput';
 import { OutputItem, Suggestion } from './components/types';
 
@@ -12,7 +11,6 @@ export default function Home() {
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState<number>(-1);
     const [editingPath, setEditingPath] = useState<string | null>(null);
-    const [editorContent, setEditorContent] = useState<string>('');
     const [output, setOutput] = useState<OutputItem[]>([]);
     const [showEditor, setShowEditor] = useState<boolean>(false);
 
@@ -106,28 +104,34 @@ export default function Home() {
         inputRef.current?.focus();
     };
 
-    const handleSave = () => {
+    const handleSaveEdit = (newContent: string) => {
         if (!editingPath) return;
         fetch('/api/note', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ path: editingPath, content: editorContent })
+            body: JSON.stringify({ path: editingPath, content: newContent })
         })
             .then(res => res.json())
             .then(() => {
-                setOutput(prev => prev.map(o =>
-                    o.type === 'content' && o.path === editingPath
-                        ? { ...o, content: editorContent }
-                        : o
-                ));
-                setOutput(prev => [
-                    ...prev,
-                    { type: 'command', query: `EDIT ${editingPath}` },
-                    { type: 'feedback', message: 'Änderungen gespeichert.' }
-                ]);
-                setShowEditor(false);
-                setEditingPath(null);
+                fetch(`/api/note?path=${encodeURIComponent(editingPath)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        setOutput(prev => prev.map(o =>
+                            o.type === 'content' && o.path === editingPath
+                                ? { ...o, content: data.content }
+                                : o
+                        ));
+                        setOutput(prev => [
+                            ...prev,
+                            { type: 'command', query: `EDIT ${editingPath}` },
+                            { type: 'feedback', message: 'Änderungen gespeichert.' }
+                        ]);
+                        setEditingPath(null);
+                    });
             });
+    };
+    const handleCancelEdit = () => {
+        setEditingPath(null);
     };
 
     const handleContainerClick = (e: React.MouseEvent) => {
@@ -143,17 +147,12 @@ export default function Home() {
                     <TerminalOutput
                         output={output}
                         setEditingPath={setEditingPath}
-                        setEditorContent={setEditorContent}
+                        setEditorContent={() => {}} // Fix: provide a no-op function
                         setShowEditor={setShowEditor}
                         outputRef={outputRef}
-                    />
-                    <EditorModal
-                        showEditor={showEditor}
-                        editorRef={editorRef}
-                        editorContent={editorContent}
-                        setEditorContent={setEditorContent}
-                        handleSave={handleSave}
-                        setShowEditor={setShowEditor}
+                        editingPath={editingPath}
+                        onSaveEdit={handleSaveEdit}
+                        onCancelEdit={handleCancelEdit}
                     />
                     <SearchInput
                         inputRef={inputRef}

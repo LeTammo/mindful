@@ -18,8 +18,15 @@ export function TerminalOutput({
     setEditingPath,
     setEditorContent,
     setShowEditor,
-    outputRef
-}: TerminalOutputProps) {
+    outputRef,
+    editingPath,
+    onSaveEdit,
+    onCancelEdit
+}: TerminalOutputProps & {
+    editingPath: string | null;
+    onSaveEdit: (newContent: string) => void;
+    onCancelEdit: () => void;
+}) {
     const lastEditableIndex = [...output].reverse().findIndex(o => o.type === 'content');
     const lastEditable = lastEditableIndex !== -1 ? output.length - 1 - lastEditableIndex : null;
 
@@ -56,10 +63,15 @@ export function TerminalOutput({
                     case 'file-match':
                         return <FileMatchOutput key={i} path={o.path} line={o.line} />;
                     case 'content':
-                        return <ContentOutput key={i} content={o.content} path={o.path}
+                        return <ContentOutput
+                            key={i}
+                            content={o.content}
+                            path={o.path}
                             setEditingPath={setEditingPath}
                             setEditorContent={setEditorContent}
-                            setShowEditor={setShowEditor}
+                            isEditing={editingPath === o.path}
+                            onSave={(value) => onSaveEdit(value)}
+                            onCancel={onCancelEdit}
                         />;
                     default:
                         return null;

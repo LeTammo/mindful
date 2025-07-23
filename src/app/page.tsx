@@ -132,9 +132,9 @@ export default function Home() {
     };
 
     return (
-        <div className="bg-black text-white min-h-screen flex flex-col p-8" onClick={handleContainerClick}>
+        <div className="bg-gray-800 min-h-screen flex flex-col p-8" onClick={handleContainerClick}>
             <div className="w-full h-full flex justify-center">
-                <div className="bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col flex-1 max-w-2xl w-full">
+                <div className="bg-gray-900 rounded-lg shadow-xl p-6 flex flex-col flex-1 max-w-2xl w-full">
                     <TerminalOutput
                         output={output}
                         setEditingPath={setEditingPath}

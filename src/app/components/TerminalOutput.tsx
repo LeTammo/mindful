@@ -27,9 +27,11 @@ export function TerminalOutput({
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowUp' && lastEditable !== null && e.target instanceof HTMLInputElement && e.target.className !== 'editFileContent') {
                 const o = output[lastEditable];
-                setEditingPath(o.path || '');
-                setEditorContent(o.content);
-                setShowEditor(true);
+                if (o.type === 'content') {
+                    setEditingPath(o.path || '');
+                    setEditorContent(o.content);
+                    setShowEditor(true);
+                }
             }
         };
         window.addEventListener('keydown', handleKeyDown);

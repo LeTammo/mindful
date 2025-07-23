@@ -130,8 +130,8 @@ export default function Home() {
 
     return (
         <div className="bg-black text-white min-h-screen flex flex-col p-8" onClick={handleContainerClick}>
-            <div className="w-full h-full">
-                <div className="bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col flex-1">
+            <div className="w-full h-full flex justify-center">
+                <div className="bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col flex-1 max-w-2xl w-full">
                     <div ref={outputRef} className="flex-1 overflow-y-auto text-base text-gray-300 flex-grow">
                         {output.map((o, i) => {
                             if (o.type === 'command') {

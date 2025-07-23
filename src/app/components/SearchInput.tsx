@@ -22,10 +22,11 @@ export function SearchInput({
     selectedSuggestion,
     selectSuggestion
 }: SearchInputProps) {
+    const username = process.env.NEXT_PUBLIC_USERNAME || 'USER';
     return (
         <div className="mt-4 flex flex-col items-center">
             <div className="flex items-center w-full">
-                <span className="font-mono text-green-500 text-lg">SEARCH&gt;</span>
+                <span className="font-mono text-emerald-500 text-xl">{username}&gt;</span>
                 <input
                     ref={inputRef as React.RefObject<HTMLInputElement>}
                     type="text"

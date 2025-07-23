@@ -127,11 +127,13 @@ export default function Home() {
                             { type: 'feedback', message: 'Änderungen gespeichert.' }
                         ]);
                         setEditingPath(null);
+                        inputRef.current?.focus(); // Focus search input after save
                     });
             });
     };
     const handleCancelEdit = () => {
         setEditingPath(null);
+        inputRef.current?.focus(); // Focus search input after cancel
     };
 
     const handleContainerClick = (e: React.MouseEvent) => {

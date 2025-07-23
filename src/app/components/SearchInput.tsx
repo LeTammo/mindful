@@ -32,6 +32,7 @@ export function SearchInput({
                     type="text"
                     autoComplete="off"
                     value={query}
+                    placeholder="Search your files..."
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
                     className="flex-1 bg-transparent border-none outline-none text-gray-200 ml-2 text-lg"

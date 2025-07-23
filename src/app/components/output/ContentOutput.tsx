@@ -33,6 +33,10 @@ const ContentOutput = ({ content, path, setEditingPath, setEditorContent, setSho
             e.preventDefault();
             onSave(editValue);
         }
+        if (e.key === 'Escape' && onCancel) {
+            e.preventDefault();
+            onCancel();
+        }
     };
 
     return isEditing ? (

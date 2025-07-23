@@ -99,7 +99,7 @@ export default function Home() {
                 setOutput(prev => [
                     ...prev,
                     { type: 'command', query: `CAT ${s.path}` },
-                    { type: 'content', content: data.content },
+                    { type: 'content', content: data.content, path: s.path },
                     { type: 'edit-button', path: s.path, content: data.content }
                 ]);
             });
@@ -107,6 +107,7 @@ export default function Home() {
     };
 
     const handleSave = () => {
+        console.log(editingPath)
         if (!editingPath) return;
         fetch('/api/note', {
             method: 'POST',

@@ -14,9 +14,16 @@ export function EditorModal({ showEditor, editorRef, editorContent, setEditorCon
     return (
         <div className="flex-col flex-1 mt-4">
             <textarea
+                id="editFileContent"
                 ref={editorRef as React.RefObject<HTMLTextAreaElement>}
                 value={editorContent}
                 onChange={(e) => setEditorContent(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSave();
+                    }
+                }}
                 className="w-full flex-1 p-3 bg-gray-800 text-gray-100 rounded-md resize-none border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
             <div className="flex justify-end mt-3">

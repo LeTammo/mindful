@@ -129,25 +129,25 @@ export default function Home() {
     };
 
     return (
-        <div className="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center" onClick={handleContainerClick}>
-            <div className="w-full max-w-xl mx-auto mt-8">
-                <div className="bg-black rounded-lg shadow-lg p-4 flex flex-col h-[500px] relative">
-                    <div ref={outputRef} className="flex-1 overflow-y-auto text-sm mb-4">
+        <div className="bg-black text-white min-h-screen flex flex-col p-8" onClick={handleContainerClick}>
+            <div className="w-full h-full">
+                <div className="bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col flex-1">
+                    <div ref={outputRef} className="flex-1 overflow-y-auto text-base text-gray-300 flex-grow">
                         {output.map((o, i) => {
                             if (o.type === 'command') {
-                                return <div key={i}><span className='text-green-400 font-mono'>SEARCH&gt; {o.query}</span></div>;
+                                return <div key={i}><span className='text-green-400 font-mono text-lg'>SEARCH&gt; {o.query}</span></div>;
                             }
                             if (o.type === 'feedback') {
-                                return <div key={i} className='pl-4 text-yellow-400 font-mono'>{o.message}</div>;
+                                return <div key={i} className='pl-4 text-yellow-400 font-mono text-base'>{o.message}</div>;
                             }
                             if (o.type === 'file-match') {
-                                return <div key={i} className='pl-4'><span className='text-green-300'>{o.path}</span>{o.line ? `: <span className="text-gray-300">${o.line}</span>` : ''}</div>;
+                                return <div key={i} className='pl-4 text-base'><span className='text-green-300'>{o.path}</span>{o.line ? `: <span className="text-gray-400">${o.line}</span>` : ''}</div>;
                             }
                             if (o.type === 'content') {
-                                return <pre key={i} className='pl-4 text-gray-200 whitespace-pre-wrap'>{o.content}</pre>;
+                                return <pre key={i} className='pl-4 text-gray-300 whitespace-pre-wrap text-base'>{o.content}</pre>;
                             }
                             if (o.type === 'edit-button') {
-                                return <button key={i} className='mt-2 px-3 py-1 bg-blue-600 text-white rounded' onClick={() => {
+                                return <button key={i} className='mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors' onClick={() => {
                                     setEditingPath(o.path);
                                     setEditorContent(o.content);
                                     setShowEditor(true);
@@ -157,22 +157,22 @@ export default function Home() {
                         })}
                     </div>
                     {showEditor && (
-                        <div className="flex-col h-full">
+                        <div className="flex-col flex-1 mt-4">
                             <textarea
                                 ref={editorRef}
                                 value={editorContent}
                                 onChange={(e) => setEditorContent(e.target.value)}
-                                className="w-full h-64 p-2 bg-gray-800 text-gray-100 rounded resize-none border border-gray-700"
+                                className="w-full flex-1 p-3 bg-gray-800 text-gray-100 rounded-md resize-none border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             ></textarea>
-                            <div className="flex justify-end mt-2">
-                                <button onClick={handleSave} className="px-3 py-1 bg-blue-600 text-white rounded">Save</button>
-                                <button onClick={() => setShowEditor(false)} className="px-3 py-1 ml-2 bg-gray-700 text-white rounded">Cancel</button>
+                            <div className="flex justify-end mt-3">
+                                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Save</button>
+                                <button onClick={() => setShowEditor(false)} className="px-4 py-2 ml-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors">Cancel</button>
                             </div>
                         </div>
                     )}
-                    <div className="absolute bottom-0 left-0 w-full flex flex-col">
-                        <div className="flex items-center">
-                            <span className="font-mono text-green-400">SEARCH&gt;</span>
+                    <div className="mt-4 flex flex-col items-center">
+                        <div className="flex items-center w-full">
+                            <span className="font-mono text-green-500 text-lg">SEARCH&gt;</span>
                             <input
                                 ref={inputRef}
                                 type="text"
@@ -180,20 +180,20 @@ export default function Home() {
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                className="flex-1 bg-transparent border-none outline-none text-gray-100 ml-2 font-mono"
+                                className="flex-1 bg-transparent border-none outline-none text-gray-200 ml-2 text-lg"
                                 autoFocus
                             />
                         </div>
                         {suggestions.length > 0 && (
-                            <div className="bg-gray-800 rounded mt-1 shadow-lg max-h-40 overflow-y-auto">
+                            <div className="bg-gray-800 rounded-md mt-2 shadow-lg max-h-48 overflow-y-auto w-full">
                                 {suggestions.map((s, i) => {
                                     if (s.type === 'feedback') {
-                                        return <div key={i} className='px-2 py-1 text-yellow-400 font-mono'>{s.message}</div>;
+                                        return <div key={i} className='px-4 py-2 text-yellow-400 font-mono text-base'>{s.message}</div>;
                                     }
                                     return (
                                         <div
                                             key={i}
-                                            className={`px-2 py-1 cursor-pointer ${selectedSuggestion === i ? 'bg-gray-700' : ''}`}
+                                            className={`px-4 py-2 cursor-pointer ${selectedSuggestion === i ? 'bg-gray-700 text-white' : 'text-gray-300'} hover:bg-gray-700 hover:text-white`}
                                             onClick={() => selectSuggestion(i)}
                                         >
                                             {s.path}{s.line ? `: ${s.line}` : ''}

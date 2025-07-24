@@ -15,7 +15,7 @@ Create a `.env` file in the root of your project and add the following environme
 
 ```env
 NEXT_PUBLIC_USERNAME=your_username_here
-# PORT=3000 # Optional, change the port if needed, default is 3000
+PORT=3000 # Optional, change the port if needed, default is 3000
 ```
 
 ### Run the server

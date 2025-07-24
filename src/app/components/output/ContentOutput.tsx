@@ -47,7 +47,7 @@ const ContentOutput = ({ content, path, setEditingPath, setEditorContent, setSho
                 onChange={e => setEditValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 className="pl-4 text-gray-300 whitespace-pre-wrap text-base bg-gray-800 rounded p-2 w-full border-none outline-none resize-none font-mono shadow-inner"
-                style={{ minHeight: '120px', fontFamily: 'inherit' }}
+                style={{ minHeight: '220px', fontFamily: 'inherit' }}
             />
             <div className="flex justify-end mt-2 gap-2">
                 <button onClick={() => { setEditValue(content); if (onCancel) onCancel(); }} className="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">Cancel</button>
